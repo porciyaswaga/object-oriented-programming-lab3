@@ -1,0 +1,56 @@
+#include "Square.h"
+#include <cmath>
+#include <iostream>
+#include <stdexcept>
+
+Square::Square(const std::array<std::pair<double, double>, 4>& verts) : vertices(verts) {}
+
+std::pair<double, double> Square::geometricCenter() const {
+    double sumX = 0, sumY = 0;
+    for (const auto& v : vertices) {
+        sumX += v.first;
+        sumY += v.second;
+    }
+    return {sumX / 4.0, sumY / 4.0};
+}
+
+double Square::area() const {
+    double dx = vertices[1].first - vertices[0].first;
+    double dy = vertices[1].second - vertices[0].second;
+    double side = std::sqrt(dx*dx + dy*dy);
+    return side * side;
+}
+
+void Square::printVertices(std::ostream& os) const {
+    os << "Square vertices:";
+    for (const auto& v : vertices) {
+        os << " (" << v.first << "," << v.second << ")";
+    }
+    os << "\n";
+}
+
+void Square::readVertices(std::istream& is) {
+    for (auto& v : vertices) {
+        is >> v.first >> v.second;
+    }
+}
+
+Figure& Square::operator=(const Figure& other) {
+    if (this != &other) {
+        const Square* sq = dynamic_cast<const Square*>(&other);
+        if (!sq) throw std::invalid_argument("Нельзя присвоить объект другого типа Square");
+        vertices = sq->vertices;
+    }
+    return *this;
+}
+
+bool Square::operator==(const Figure& other) const {
+    const Square* sq = dynamic_cast<const Square*>(&other);
+    if (!sq) return false;
+    return vertices == sq->vertices;
+}
+
+Square& Square::operator=(const Square& other) {
+    if (this != &other) vertices = other.vertices;
+    return *this;
+}
