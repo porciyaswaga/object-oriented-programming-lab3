@@ -39,7 +39,6 @@ void Rectangle::readVertices(std::istream& is) {
     }
 }
 
-// Оператор присваивания для override
 Figure& Rectangle::operator=(const Figure& other) {
     if (this != &other) {
         const Rectangle* rect = dynamic_cast<const Rectangle*>(&other);
@@ -51,14 +50,12 @@ Figure& Rectangle::operator=(const Figure& other) {
     return *this;
 }
 
-// Сравнение для override
 bool Rectangle::operator==(const Figure& other) const {
     const Rectangle* rect = dynamic_cast<const Rectangle*>(&other);
     if (!rect) return false;
     return vertices == rect->vertices;
 }
 
-// Дополнительный типизированный оператор присваивания
 Rectangle& Rectangle::operator=(const Rectangle& other) {
     if (this != &other) vertices = other.vertices;
     return *this;
